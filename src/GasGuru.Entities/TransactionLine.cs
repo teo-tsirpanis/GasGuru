@@ -11,6 +11,7 @@ public class TransactionLine
         get => _transaction ?? throw Utilities.CreateUnboundValueAccessException();
         set => _transaction = value;
     }
+    public Guid TransactionId { get; set; }
     public Item Item
     {
         get => _item ?? throw Utilities.CreateUnboundValueAccessException();
@@ -20,6 +21,7 @@ public class TransactionLine
             ItemPrice = value.Price;
         }
     }
+    public Guid ItemId { get; set; }
     public int Quantity { get; set; }
     // We can't just forward it to Price.Item because it might change in the meantime.
     public decimal ItemPrice { get; set; }

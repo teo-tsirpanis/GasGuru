@@ -12,11 +12,13 @@ public class Transaction
         get => _employee ?? throw Utilities.CreateUnboundValueAccessException();
         set => _employee = value;
     }
+    public Guid EmployeeId { get; set; }
     public Customer Customer
     {
         get => _customer ?? throw Utilities.CreateUnboundValueAccessException();
         set => _customer = value;
     }
+    public Guid CustomerId { get; set; }
     public PaymentMethod PaymentMethod { get; }
     public List<TransactionLine> Lines { get; } = new();
 
