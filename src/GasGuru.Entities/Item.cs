@@ -9,10 +9,10 @@ public class Item
     public decimal Price { get; set; }
     public decimal Cost { get; set; }
 
-    public Item(string code, string descrpition, ItemType itemType, decimal price, decimal cost)
+    public Item(string code, string description, ItemType itemType, decimal price, decimal cost)
     {
         Code = code;
-        Description = descrpition;
+        Description = description;
         ItemType = itemType;
         Price = price;
         Cost = cost;
