@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GasGuru.Api\GasGuru.Api.csproj" />
     <ProjectReference Include="..\GasGuru.Entities\GasGuru.Entities.csproj" />
   </ItemGroup>
 </Project>

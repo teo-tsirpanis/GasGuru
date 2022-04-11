@@ -1,13 +1,15 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{168F149C-873A-4348-B758-388EFCF1BAB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GasGuru.Entities", "src\GasGuru.Entities\GasGuru.Entities.csproj", "{5C88B950-CEE8-418D-A2AE-E2EA36029D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GasGuru.Entities", "src\GasGuru.Entities\GasGuru.Entities.csproj", "{5C88B950-CEE8-418D-A2AE-E2EA36029D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GasGuru.Database", "src\GasGuru.Database\GasGuru.Database.csproj", "{F07828EB-66CD-4426-8664-98C6D4DFCA50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GasGuru.Database", "src\GasGuru.Database\GasGuru.Database.csproj", "{F07828EB-66CD-4426-8664-98C6D4DFCA50}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GasGuru.Api", "src\GasGuru.Api\GasGuru.Api.csproj", "{6347B475-C300-4F67-9C68-8A3708E249C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{F07828EB-66CD-4426-8664-98C6D4DFCA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F07828EB-66CD-4426-8664-98C6D4DFCA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F07828EB-66CD-4426-8664-98C6D4DFCA50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6347B475-C300-4F67-9C68-8A3708E249C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6347B475-C300-4F67-9C68-8A3708E249C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6347B475-C300-4F67-9C68-8A3708E249C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6347B475-C300-4F67-9C68-8A3708E249C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5C88B950-CEE8-418D-A2AE-E2EA36029D46} = {168F149C-873A-4348-B758-388EFCF1BAB6}
 		{F07828EB-66CD-4426-8664-98C6D4DFCA50} = {168F149C-873A-4348-B758-388EFCF1BAB6}
+		{6347B475-C300-4F67-9C68-8A3708E249C0} = {168F149C-873A-4348-B758-388EFCF1BAB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67116A9F-F15E-4B63-B393-19D8AE4B56F1}
