@@ -17,5 +17,6 @@ internal class ItemConfiguration : IEntityTypeConfiguration<Item>
         builder.Property(x => x.ItemType).IsRequired();
         builder.Property(x => x.Price).HasMonetaryPrecision().IsRequired();
         builder.Property(x => x.Cost).HasMonetaryPrecision().IsRequired();
+        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
     }
 }

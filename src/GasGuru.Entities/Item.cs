@@ -8,6 +8,7 @@ public class Item
     public ItemType ItemType { get; set; }
     public decimal Price { get; set; }
     public decimal Cost { get; set; }
+    public bool IsDeleted { get; set; }
 
     public Item(string code, string description, ItemType itemType, decimal price, decimal cost)
     {

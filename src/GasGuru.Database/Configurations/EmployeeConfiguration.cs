@@ -16,5 +16,6 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(x => x.HireDateStart).IsRequired();
         builder.Property(x => x.SalaryPerMonth).HasPrecision(8, 2).IsRequired();
         builder.Property(x => x.EmployeeType).IsRequired();
+        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
     }
 }

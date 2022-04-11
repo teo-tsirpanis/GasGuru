@@ -9,6 +9,7 @@ public class Employee
     public DateTime? HireDateEnd { get; set; }
     public decimal SalaryPerMonth { get; set; }
     public EmployeeType EmployeeType { get; set; }
+    public bool IsDeleted { get; set; }
 
     public Employee(string name, string surname, decimal salaryPerMonth, EmployeeType employeeType)
     {
