@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GasGuru.Database;
 
-public class GasStationContext : DbContext
+internal class GasStationContext : DbContext
 {
     public DbSet<Customer> Customers { get; } = null!;
     public DbSet<Item> Items { get; } = null!;
