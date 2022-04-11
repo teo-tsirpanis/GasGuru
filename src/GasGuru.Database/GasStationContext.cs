@@ -10,6 +10,7 @@ internal class GasStationContext : DbContext
     public DbSet<Item> Items { get; } = null!;
     public DbSet<Employee> Employees { get; } = null!;
     public DbSet<Transaction> Transactions { get; } = null!;
+    public DbSet<GasStationOptions> GasStationOptions { get; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -24,6 +25,7 @@ internal class GasStationContext : DbContext
         modelBuilder.ApplyConfiguration(new ItemConfiguration());
         modelBuilder.ApplyConfiguration(new TransactionConfiguration());
         modelBuilder.ApplyConfiguration(new TransactionLineConfiguration());
+        modelBuilder.ApplyConfiguration(new GasStationOptionsConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

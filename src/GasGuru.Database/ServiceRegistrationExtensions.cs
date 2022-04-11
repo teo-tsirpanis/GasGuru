@@ -1,4 +1,4 @@
-﻿using GasGuru.Api;
+using GasGuru.Api;
 using GasGuru.Database;
 using GasGuru.Database.Repositories;
 
@@ -11,6 +11,7 @@ public static class ServiceRegistrationExtensions
         return services
             .AddDbContext<GasStationContext>()
             .AddTransient<IEntityRepo<CustomerModel>, CustomerRepo>()
+            .AddTransient<IGasStationOptionsRepo, GasStationOptionsRepo>()
             ;
     }
 }

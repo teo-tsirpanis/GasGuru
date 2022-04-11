@@ -15,3 +15,9 @@ public class CustomerModel
     public string CardNumber { get; set; }
     public bool IsDeleted { get; set; }
 }
+
+public class GasStationOptionsModel
+{
+    [Range(0, 100_000_000.0)]
+    public decimal MonthlyRent { get; set; }
+}
