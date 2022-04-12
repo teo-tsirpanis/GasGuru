@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 
 using System.ComponentModel.DataAnnotations;
 
@@ -32,10 +32,13 @@ public enum EmployeeType
 public class EmployeeModel
 {
     public Guid Id { get; init; }
+    [Required]
     public string Name { get; set; }
+    [Required]
     public string Surname { get; set; }
     public DateTime HireDateStart { get; set; }
     public DateTime? HireDateEnd { get; set; }
+    [Range(0.01, 100_000_000.0)]
     public decimal SalaryPerMonth { get; set; }
     public EmployeeType EmployeeType { get; set; }
 }
