@@ -1,4 +1,4 @@
-using GasGuru.Api;
+﻿using GasGuru.Api;
 using GasGuru.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +25,7 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
         Employee? employee = await _context.Employees.FindAsync(id);
         if (employee is not null)
         {
-            employee.IsDeleted = true;
+            employee.HireDateEnd = DateTime.Now;
             await _context.SaveChangesAsync();
         }
     }
@@ -34,7 +34,7 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
     {
         IQueryable<Employee> query = _context.Employees.AsNoTracking();
         if (!includeDeleted)
-            query = query.Where(x => !x.IsDeleted);
+            query = query.Where(x => x.HireDateEnd.HasValue);
         return query.Select(x => ConvertToEmployeeModel(x)).AsAsyncEnumerable();
     }
 
@@ -70,7 +70,6 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
             HireDateEnd = employee.HireDateEnd,
             SalaryPerMonth = employee.SalaryPerMonth,
             EmployeeType = (Api.EmployeeType)employee.EmployeeType,
-            IsDeleted = employee.IsDeleted
         };
 
     private static void UpdateEmployee(Employee destination, Employee source)
@@ -81,7 +80,6 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
         destination.HireDateEnd = source.HireDateEnd;
         destination.SalaryPerMonth = source.SalaryPerMonth;
         destination.EmployeeType = source.EmployeeType;
-        destination.IsDeleted = source.IsDeleted;
     }
 
     private static Employee ValidateEmployeeModel(EmployeeModel model)

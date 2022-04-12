@@ -38,5 +38,4 @@ public class EmployeeModel
     public DateTime? HireDateEnd { get; set; }
     public decimal SalaryPerMonth { get; set; }
     public EmployeeType EmployeeType { get; set; }
-    public bool IsDeleted { get; set; }
 }
