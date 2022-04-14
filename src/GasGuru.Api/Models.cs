@@ -1,8 +1,17 @@
-#nullable disable
+﻿#nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GasGuru.Api;
+
+[JsonSerializable(typeof(CustomerModel))]
+[JsonSerializable(typeof(GasStationOptionsModel))]
+[JsonSerializable(typeof(EmployeeModel))]
+[JsonSerializable(typeof(ItemModel))]
+[JsonSerializable(typeof(TransactionModel))]
+[JsonSourceGenerationOptions(DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
+public partial class ModelSerializerContext : JsonSerializerContext { }
 
 public class CustomerModel
 {
