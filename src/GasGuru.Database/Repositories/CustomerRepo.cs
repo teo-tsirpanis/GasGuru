@@ -84,7 +84,7 @@ internal class CustomerRepo : IEntityRepo<CustomerModel>
             throw new InvalidOperationException("Customer name is required");
         if (model.Surname is null)
             throw new InvalidOperationException("Customer surname is required");
-        if (model.CardNumber is null || model.CardNumber.StartsWith('A'))
+        if (model.CardNumber is null || !model.CardNumber.StartsWith('A'))
             throw new InvalidOperationException("Card number must start with A");
 
         return new Customer(model.Name, model.Surname, model.CardNumber);
