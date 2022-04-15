@@ -63,7 +63,7 @@ internal class TransactionRepo : ITransactionRepo
                 ItemDisplay = $"{x.Item.Code}",
                 Quantity = x.Quantity,
                 DiscountPercent = x.DiscountPercent,
-                ItemPrice = x.Item.Price
+                ItemPrice = x.ItemPrice
             }).ToList()
         };
 
@@ -88,6 +88,7 @@ internal class TransactionRepo : ITransactionRepo
         {
             Item = item,
             Quantity = model.Quantity,
+            ItemPrice = item.Price,
             DiscountPercent = discountPercent
         };
     }
