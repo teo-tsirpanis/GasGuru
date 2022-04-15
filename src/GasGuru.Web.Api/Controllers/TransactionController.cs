@@ -21,9 +21,12 @@ public class TransactionController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public Task<TransactionViewModel?> Get(Guid id)
+    public async Task<ActionResult<TransactionViewModel>> Get(Guid id)
     {
-        return _repo.GetByIdAsync(id);
+        TransactionViewModel? transaction = await _repo.GetByIdAsync(id);
+        if (transaction == null)
+            return NotFound();
+        return transaction;
     }
 
     [HttpPost]

@@ -21,9 +21,12 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public Task<ItemViewModel?> Get(Guid id)
+    public async Task<ActionResult<ItemViewModel>> Get(Guid id)
     {
-        return _repo.GetByIdAsync(id);
+        ItemViewModel? item = await _repo.GetByIdAsync(id);
+        if (item == null)
+            return NotFound();
+        return item;
     }
 
     [HttpPost]

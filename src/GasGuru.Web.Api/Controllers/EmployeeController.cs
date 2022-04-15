@@ -21,9 +21,12 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public Task<EmployeeViewModel?> Get(Guid id)
+    public async Task<ActionResult<EmployeeViewModel>> Get(Guid id)
     {
-        return _repo.GetByIdAsync(id);
+        EmployeeViewModel? employee = await _repo.GetByIdAsync(id);
+        if (employee == null)
+            return NotFound();
+        return employee;
     }
 
     [HttpPost]

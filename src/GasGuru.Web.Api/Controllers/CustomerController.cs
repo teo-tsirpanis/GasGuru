@@ -21,15 +21,23 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public Task<CustomerViewModel?> Get(Guid id)
+    public async Task<ActionResult<CustomerViewModel>> Get(Guid id)
     {
-        return _repo.GetByIdAsync(id);
+        CustomerViewModel? customer = await _repo.GetByIdAsync(id);
+
+        if (customer == null)
+            return NotFound();
+        return customer;
     }
 
     [HttpGet("cardNumber/{cardNumber}")]
-    public Task<CustomerViewModel?> Get(string cardNumber)
+    public async Task<ActionResult<CustomerViewModel>> Get(string cardNumber)
     {
-        return _repo.GetByCardNumberAsync(cardNumber);
+        CustomerViewModel? customer = await _repo.GetByCardNumberAsync(cardNumber);
+
+        if (customer == null)
+            return NotFound();
+        return customer;
     }
 
     [HttpPost]
