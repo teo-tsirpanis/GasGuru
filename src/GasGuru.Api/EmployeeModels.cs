@@ -1,12 +1,14 @@
 ﻿#nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GasGuru.Api;
 
 // These enums are already defined in the Entities project, but are defined here
 // again, to further separate the database's domain model from the web API's.
 // New member additions must be replicated there accordingly.
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EmployeeType
 {
     Manager,

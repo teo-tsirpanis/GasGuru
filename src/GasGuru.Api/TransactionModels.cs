@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace GasGuru.Api;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum PaymentMethod
 {
     CreditCard,

@@ -1,9 +1,11 @@
 ﻿#nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GasGuru.Api;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ItemType
 {
     Fuel,
