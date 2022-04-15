@@ -26,6 +26,12 @@ public class CustomerController : ControllerBase
         return _repo.GetByIdAsync(id);
     }
 
+    [HttpGet("cardNumber/{cardNumber}")]
+    public Task<CustomerViewModel?> Get(string cardNumber)
+    {
+        return _repo.GetByCardNumberAsync(cardNumber);
+    }
+
     [HttpPost]
     public async Task Post([FromBody] CustomerEditModel model)
     {
