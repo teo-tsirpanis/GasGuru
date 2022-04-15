@@ -31,6 +31,9 @@ public class GasStationOptionsModel
     public decimal MonthlyRent { get; set; }
 }
 
+// These enums are already defined in the Entities project, but are defined here
+// again, to further separate the database's domain model from the web API's.
+// New member additions must be replicated there accordingly.
 public enum EmployeeType
 {
     Manager,
