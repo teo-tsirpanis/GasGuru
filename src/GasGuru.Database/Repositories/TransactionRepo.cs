@@ -69,17 +69,23 @@ internal class TransactionRepo : ITransactionRepo
 
     private async Task<TransactionLine> ValidateTransactionLineModelAsync(TransactionLineCreateModel model)
     {
-        if (model.DiscountPercent is not > 0.0m and <= 1.0m)
-            throw new ArgumentException("Discount percentage must be between 0.0 and 1.0");
         if (model.Quantity <= 0)
             throw new ArgumentException("Quantity must be greater than 0");
         if (await _context.Items.FindAsync(model.ItemId) is not Item item)
             throw new InvalidOperationException("Item not found");
+
+        decimal netPrice = item.Price * model.Quantity;
+        decimal discountPercent = (item, netPrice) switch
+        {
+            ({ ItemType: Entities.ItemType.Fuel }, > 20) => 0.1m,
+            _ => 0m
+        };
+
         return new TransactionLine()
         {
             Item = item,
             Quantity = model.Quantity,
-            DiscountPercent = model.DiscountPercent
+            DiscountPercent = discountPercent
         };
     }
 
@@ -94,7 +100,7 @@ internal class TransactionRepo : ITransactionRepo
         if (await _context.Employees.FindAsync(model.EmployeeId) is not Employee employee)
             throw new InvalidOperationException("Employee not found");
 
-        var transaction = new Transaction(model.Date, (Entities.PaymentMethod)model.PaymentMethod)
+        var transaction = new Transaction(DateTime.Now, (Entities.PaymentMethod)model.PaymentMethod)
         {
             Customer = customer,
             Employee = employee
@@ -102,6 +108,16 @@ internal class TransactionRepo : ITransactionRepo
         foreach (var line in model.Lines!)
         {
             transaction.Lines.Add(await ValidateTransactionLineModelAsync(line));
+        }
+
+        if (transaction.Lines.Count(x => x.Item.ItemType == Entities.ItemType.Fuel) > 1)
+            throw new InvalidOperationException("At most one fuel item is allowed");
+        switch (transaction.TotalValue, transaction.PaymentMethod)
+        {
+            case (> 50, not Entities.PaymentMethod.Cash):
+                throw new InvalidOperationException($"Transactions above {50:C} are only allowed with cash");
+            default:
+                break;
         }
 
         return transaction;
