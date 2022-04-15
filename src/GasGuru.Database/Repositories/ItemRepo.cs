@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GasGuru.Database.Repositories;
 
-internal class ItemRepo : IEntityRepo<ItemModel>
+internal class ItemRepo : IItemRepo
 {
     private readonly GasStationContext _context;
 
@@ -13,9 +13,9 @@ internal class ItemRepo : IEntityRepo<ItemModel>
         _context = context;
     }
 
-    public async Task CreateAsync(ItemModel entity)
+    public async Task CreateAsync(ItemEditModel entity)
     {
-        Item validated = ValidateItemModel(entity);
+        Item validated = ValidateEditModel(entity);
         await _context.Items.AddAsync(validated);
         await _context.SaveChangesAsync();
     }
@@ -30,15 +30,15 @@ internal class ItemRepo : IEntityRepo<ItemModel>
         }
     }
 
-    public IAsyncEnumerable<ItemModel> GetAllAsync(bool includeDeleted)
+    public IAsyncEnumerable<ItemViewModel> GetAllAsync(bool includeDeleted)
     {
         IQueryable<Item> query = _context.Items.AsNoTracking();
         if (!includeDeleted)
             query = query.Where(c => !c.IsDeleted);
-        return query.Select(x => ConvertToItemModel(x)).AsAsyncEnumerable();
+        return query.Select(x => ConvertToViewModel(x)).AsAsyncEnumerable();
     }
 
-    public async Task<ItemModel?> GetByIdAsync(Guid id)
+    public async Task<ItemViewModel?> GetByIdAsync(Guid id)
     {
         Item? item = await _context.Items
             .AsNoTracking()
@@ -46,12 +46,12 @@ internal class ItemRepo : IEntityRepo<ItemModel>
 
         if (item is null)
             return null;
-        return ConvertToItemModel(item);
+        return ConvertToViewModel(item);
     }
 
-    public async Task UpdateAsync(Guid id, ItemModel entity)
+    public async Task UpdateAsync(Guid id, ItemEditModel entity)
     {
-        var validated = ValidateItemModel(entity);
+        var validated = ValidateEditModel(entity);
         var item = await _context.Items.FindAsync(id);
         if (item is null)
             await _context.Items.AddAsync(validated);
@@ -60,7 +60,7 @@ internal class ItemRepo : IEntityRepo<ItemModel>
         await _context.SaveChangesAsync();
     }
 
-    private static ItemModel ConvertToItemModel(Item item) =>
+    private static ItemViewModel ConvertToViewModel(Item item) =>
         new()
         {
             Id = item.Id,
@@ -82,7 +82,7 @@ internal class ItemRepo : IEntityRepo<ItemModel>
         destination.IsDeleted = source.IsDeleted;
     }
 
-    private static Item ValidateItemModel(ItemModel model)
+    private static Item ValidateEditModel(ItemEditModel model)
     {
         if (string.IsNullOrEmpty(model.Code))
             throw new InvalidOperationException("Item code is required");

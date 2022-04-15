@@ -10,7 +10,8 @@ namespace GasGuru.Api;
 [JsonSerializable(typeof(GasStationOptionsModel))]
 [JsonSerializable(typeof(EmployeeViewModel))]
 [JsonSerializable(typeof(EmployeeEditModel))]
-[JsonSerializable(typeof(ItemModel))]
+[JsonSerializable(typeof(ItemViewModel))]
+[JsonSerializable(typeof(ItemEditModel))]
 [JsonSerializable(typeof(TransactionModel))]
 [JsonSourceGenerationOptions(DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 public partial class ModelSerializerContext : JsonSerializerContext { }
@@ -31,28 +32,6 @@ public class GasStationOptionsModel
 {
     [Range(0, 100_000_000.0)]
     public decimal MonthlyRent { get; set; }
-}
-
-public enum ItemType
-{
-    Fuel,
-    Product,
-    Service
-}
-
-public class ItemModel
-{
-    public Guid Id { get; init; }
-    [Required]
-    public string Code { get; set; }
-    [Required]
-    public string Description { get; set; }
-    public ItemType ItemType { get; set; }
-    [Range(0.01, 100_000_000.0)]
-    public decimal Price { get; set; }
-    [Range(0.01, 100_000_000.0)]
-    public decimal Cost { get; set; }
-    public bool IsDeleted { get; set; }
 }
 
 public enum PaymentMethod
