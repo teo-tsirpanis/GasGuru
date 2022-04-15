@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GasGuru.Database.Repositories;
 
-internal class EmployeeRepo : IEntityRepo<EmployeeModel>
+internal class EmployeeRepo : IEmployeeRepo
 {
     private readonly GasStationContext _context;
 
@@ -13,9 +13,9 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
         _context = context;
     }
 
-    public async Task CreateAsync(EmployeeModel entity)
+    public async Task CreateAsync(EmployeeEditModel entity)
     {
-        Employee validated = ValidateEmployeeModel(entity);
+        Employee validated = ValidateEditModel(entity);
         await _context.Employees.AddAsync(validated);
         await _context.SaveChangesAsync();
     }
@@ -30,15 +30,15 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
         }
     }
 
-    public IAsyncEnumerable<EmployeeModel> GetAllAsync(bool includeDeleted)
+    public IAsyncEnumerable<EmployeeViewModel> GetAllAsync(bool includeDeleted)
     {
         IQueryable<Employee> query = _context.Employees.AsNoTracking();
         if (!includeDeleted)
             query = query.Where(x => x.HireDateEnd.HasValue);
-        return query.Select(x => ConvertToEmployeeModel(x)).AsAsyncEnumerable();
+        return query.Select(x => ConvertToViewModel(x)).AsAsyncEnumerable();
     }
 
-    public async Task<EmployeeModel?> GetByIdAsync(Guid id)
+    public async Task<EmployeeViewModel?> GetByIdAsync(Guid id)
     {
         Employee? employee = await _context.Employees
             .AsNoTracking()
@@ -46,12 +46,12 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
 
         if (employee is null)
             return null;
-        return ConvertToEmployeeModel(employee);
+        return ConvertToViewModel(employee);
     }
 
-    public async Task UpdateAsync(Guid id, EmployeeModel entity)
+    public async Task UpdateAsync(Guid id, EmployeeEditModel entity)
     {
-        var validated = ValidateEmployeeModel(entity);
+        var validated = ValidateEditModel(entity);
         var employee = await _context.Employees.FindAsync(id);
         if (employee is null)
             await _context.Employees.AddAsync(validated);
@@ -60,7 +60,7 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
         await _context.SaveChangesAsync();
     }
 
-    private static EmployeeModel ConvertToEmployeeModel(Employee employee) =>
+    private static EmployeeViewModel ConvertToViewModel(Employee employee) =>
         new()
         {
             Id = employee.Id,
@@ -82,7 +82,7 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
         destination.EmployeeType = source.EmployeeType;
     }
 
-    private static Employee ValidateEmployeeModel(EmployeeModel model)
+    private static Employee ValidateEditModel(EmployeeEditModel model)
     {
         if (model.Name is null)
             throw new InvalidOperationException("Employee name is required");
@@ -92,8 +92,6 @@ internal class EmployeeRepo : IEntityRepo<EmployeeModel>
             throw new InvalidOperationException("Invalid employee type");
         if (model.SalaryPerMonth <= 0)
             throw new InvalidOperationException("Salary per month must be positive");
-        if (model.HireDateEnd is DateTime hireDateEnd && hireDateEnd < model.HireDateStart)
-            throw new InvalidOperationException("Employee must be terminated after being hired");
 
         var employeeType = (Entities.EmployeeType)model.EmployeeType;
         return new Employee(model.Name, model.Surname, model.SalaryPerMonth, employeeType);

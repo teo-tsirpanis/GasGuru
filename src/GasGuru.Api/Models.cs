@@ -5,9 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace GasGuru.Api;
 
-[JsonSerializable(typeof(CustomerModel))]
+[JsonSerializable(typeof(CustomerViewModel))]
+[JsonSerializable(typeof(CustomerEditModel))]
 [JsonSerializable(typeof(GasStationOptionsModel))]
-[JsonSerializable(typeof(EmployeeModel))]
+[JsonSerializable(typeof(EmployeeViewModel))]
+[JsonSerializable(typeof(EmployeeEditModel))]
 [JsonSerializable(typeof(ItemModel))]
 [JsonSerializable(typeof(TransactionModel))]
 [JsonSourceGenerationOptions(DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
@@ -29,30 +31,6 @@ public class GasStationOptionsModel
 {
     [Range(0, 100_000_000.0)]
     public decimal MonthlyRent { get; set; }
-}
-
-// These enums are already defined in the Entities project, but are defined here
-// again, to further separate the database's domain model from the web API's.
-// New member additions must be replicated there accordingly.
-public enum EmployeeType
-{
-    Manager,
-    Staff,
-    Cashier
-}
-
-public class EmployeeModel
-{
-    public Guid Id { get; init; }
-    [Required]
-    public string Name { get; set; }
-    [Required]
-    public string Surname { get; set; }
-    public DateTime HireDateStart { get; set; }
-    public DateTime? HireDateEnd { get; set; }
-    [Range(0.01, 100_000_000.0)]
-    public decimal SalaryPerMonth { get; set; }
-    public EmployeeType EmployeeType { get; set; }
 }
 
 public enum ItemType
