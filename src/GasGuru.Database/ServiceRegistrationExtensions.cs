@@ -10,9 +10,9 @@ public static class ServiceRegistrationExtensions
     {
         return services
             .AddDbContext<GasStationContext>()
-            .AddTransient<IEntityRepo<CustomerModel>, CustomerRepo>()
-            .AddTransient<IEntityRepo<EmployeeModel>, EmployeeRepo>()
-            .AddTransient<IEntityRepo<ItemModel>, ItemRepo>()
+            .AddTransient<ICustomerRepo, CustomerRepo>()
+            .AddTransient<IEmployeeRepo, EmployeeRepo>()
+            .AddTransient<IItemRepo, ItemRepo>()
             .AddTransient<ITransactionRepo, TransactionRepo>()
             .AddTransient<IGasStationOptionsRepo, GasStationOptionsRepo>()
             ;
