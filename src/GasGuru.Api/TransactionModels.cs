@@ -23,6 +23,8 @@ public class TransactionViewModel
 #nullable enable
     public List<TransactionLineViewModel>? Lines { get; set; }
 #nullable disable
+    [JsonIgnore]
+    public decimal TotalValue => Lines?.Sum(l => l.TotalPrice) ?? 0;
 }
 
 public class TransactionLineViewModel

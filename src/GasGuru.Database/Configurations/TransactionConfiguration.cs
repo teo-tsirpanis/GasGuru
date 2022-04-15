@@ -16,5 +16,6 @@ internal class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);
         builder.Property(x => x.PaymentMethod).IsRequired();
         builder.HasMany(x => x.Lines).WithOne(x => x.Transaction).HasForeignKey(x => x.TransactionId);
+        builder.Ignore(x => x.TotalValue);
     }
 }

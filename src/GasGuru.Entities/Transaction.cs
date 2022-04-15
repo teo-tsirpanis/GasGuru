@@ -21,6 +21,7 @@ public class Transaction
     public Guid CustomerId { get; set; }
     public PaymentMethod PaymentMethod { get; }
     public List<TransactionLine> Lines { get; } = new();
+    public decimal TotalValue => Lines.Sum(l => l.TotalPrice);
 
     public Transaction(DateTime date, PaymentMethod paymentMethod)
     {
