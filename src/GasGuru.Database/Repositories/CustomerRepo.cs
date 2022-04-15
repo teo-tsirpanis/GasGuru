@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GasGuru.Database.Repositories;
 
-internal class CustomerRepo : IEntityRepo<CustomerModel>
+internal class CustomerRepo : ICustomerRepo
 {
     private readonly GasStationContext _context;
 
@@ -13,9 +13,9 @@ internal class CustomerRepo : IEntityRepo<CustomerModel>
         _context = context;
     }
 
-    public async Task CreateAsync(CustomerModel entity)
+    public async Task CreateAsync(CustomerEditModel entity)
     {
-        Customer validated = ValidateCustomerModel(entity);
+        Customer validated = ValidateEditModel(entity);
         await _context.Customers.AddAsync(validated);
         await _context.SaveChangesAsync();
     }
@@ -30,15 +30,15 @@ internal class CustomerRepo : IEntityRepo<CustomerModel>
         }
     }
 
-    public IAsyncEnumerable<CustomerModel> GetAllAsync(bool includeDeleted)
+    public IAsyncEnumerable<CustomerViewModel> GetAllAsync(bool includeDeleted)
     {
         IQueryable<Customer> query = _context.Customers.AsNoTracking();
         if (!includeDeleted)
             query = query.Where(c => !c.IsDeleted);
-        return query.Select(x => ConvertToCustomerModel(x)).AsAsyncEnumerable();
+        return query.Select(x => ConvertToViewModel(x)).AsAsyncEnumerable();
     }
 
-    public async Task<CustomerModel?> GetByIdAsync(Guid id)
+    public async Task<CustomerViewModel?> GetByIdAsync(Guid id)
     {
         Customer? customer = await _context.Customers
             .AsNoTracking()
@@ -46,12 +46,12 @@ internal class CustomerRepo : IEntityRepo<CustomerModel>
 
         if (customer is null)
             return null;
-        return ConvertToCustomerModel(customer);
+        return ConvertToViewModel(customer);
     }
 
-    public async Task UpdateAsync(Guid id, CustomerModel entity)
+    public async Task UpdateAsync(Guid id, CustomerEditModel entity)
     {
-        var validated = ValidateCustomerModel(entity);
+        var validated = ValidateEditModel(entity);
         var customer = await _context.Customers.FindAsync(id);
         if (customer is null)
             await _context.Customers.AddAsync(validated);
@@ -60,7 +60,7 @@ internal class CustomerRepo : IEntityRepo<CustomerModel>
         await _context.SaveChangesAsync();
     }
 
-    private static CustomerModel ConvertToCustomerModel(Customer customer) =>
+    private static CustomerViewModel ConvertToViewModel(Customer customer) =>
         new()
         {
             Id = customer.Id,
@@ -78,7 +78,7 @@ internal class CustomerRepo : IEntityRepo<CustomerModel>
         destination.IsDeleted = source.IsDeleted;
     }
 
-    private static Customer ValidateCustomerModel(CustomerModel model)
+    private static Customer ValidateEditModel(CustomerEditModel model)
     {
         if (model.Name is null)
             throw new InvalidOperationException("Customer name is required");

@@ -1,10 +1,10 @@
 ﻿namespace GasGuru.Api;
 
-public interface IEntityRepo<T>
+public interface IEntityRepo<TViewModel, TEditModel>
 {
-    IAsyncEnumerable<T> GetAllAsync(bool includeDeleted);
-    Task<T?> GetByIdAsync(Guid id);
-    Task CreateAsync(T entity);
-    Task UpdateAsync(Guid id, T entity);
+    IAsyncEnumerable<TViewModel> GetAllAsync(bool includeDeleted);
+    Task<TViewModel?> GetByIdAsync(Guid id);
+    Task CreateAsync(TEditModel entity);
+    Task UpdateAsync(Guid id, TEditModel entity);
     Task DeleteAsync(Guid id);
 }
