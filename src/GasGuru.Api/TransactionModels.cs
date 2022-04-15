@@ -32,8 +32,7 @@ public class TransactionLineViewModel
     public Guid Id { get; init; }
     public Guid ItemId { get; set; }
     public string ItemDisplay { get; set; }
-    [Range(1, 1000)]
-    public int Quantity { get; set; }
+    public decimal Quantity { get; set; }
     public decimal ItemPrice { get; set; }
     [JsonIgnore]
     public decimal NetPrice => Quantity * ItemPrice;
@@ -58,6 +57,6 @@ public class TransactionLineCreateModel
 {
     public Guid Id { get; init; }
     public Guid ItemId { get; set; }
-    [Range(1, 1000)]
-    public int Quantity { get; set; }
+    [Range(0.01, 1000)]
+    public decimal Quantity { get; set; }
 }

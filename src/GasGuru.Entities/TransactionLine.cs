@@ -22,7 +22,8 @@ public class TransactionLine
         }
     }
     public Guid ItemId { get; set; }
-    public int Quantity { get; set; }
+    // The quantity can be a decimal only for fuels.
+    public decimal Quantity { get; set; }
     // We can't just forward it to Price.Item because it might change in the meantime.
     public decimal ItemPrice { get; set; }
     public decimal NetPrice => Quantity * ItemPrice;

@@ -70,9 +70,12 @@ internal class TransactionRepo : ITransactionRepo
     private async Task<TransactionLine> ValidateTransactionLineModelAsync(TransactionLineCreateModel model)
     {
         if (model.Quantity <= 0)
-            throw new ArgumentException("Quantity must be greater than 0");
+            throw new InvalidOperationException("Quantity must be greater than 0");
         if (await _context.Items.FindAsync(model.ItemId) is not Item item)
             throw new InvalidOperationException("Item not found");
+        // New business rule: the quantity must be a whole number unless the item is fuel.
+        if (item.ItemType != Entities.ItemType.Fuel && model.Quantity % 1 != 0)
+            throw new InvalidOperationException("Quantity must be a whole number for non-fuel items");
 
         decimal netPrice = item.Price * model.Quantity;
         decimal discountPercent = (item, netPrice) switch

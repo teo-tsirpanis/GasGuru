@@ -13,7 +13,7 @@ internal class TransactionLineConfiguration : IEntityTypeConfiguration<Transacti
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         // The Transaction field is configured on TransactionConfiguration.
         builder.HasOne(x => x.Item).WithMany().HasForeignKey(x => x.ItemId).IsRequired();
-        builder.Property(x => x.Quantity).IsRequired();
+        builder.Property(x => x.Quantity).HasPrecision(6, 2).IsRequired();
         builder.Property(x => x.ItemPrice).HasMonetaryPrecision().IsRequired();
         builder.Property(x => x.DiscountPercent).HasMonetaryPrecision().IsRequired();
         builder.Ignore(x => x.NetPrice);
