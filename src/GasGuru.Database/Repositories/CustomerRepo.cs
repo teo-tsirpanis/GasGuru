@@ -32,10 +32,10 @@ internal class CustomerRepo : ICustomerRepo
 
     public IAsyncEnumerable<CustomerViewModel> GetAllAsync(bool includeDeleted)
     {
-        IQueryable<Customer> query = _context.Customers.AsNoTracking();
+        IQueryable<Customer> query = _context.Customers;
         if (!includeDeleted)
             query = query.Where(c => !c.IsDeleted);
-        return query.Select(x => ConvertToViewModel(x)).AsAsyncEnumerable();
+        return query.AsNoTracking().Select(x => ConvertToViewModel(x)).AsAsyncEnumerable();
     }
 
     public async Task<CustomerViewModel?> GetByIdAsync(Guid id)
@@ -43,6 +43,17 @@ internal class CustomerRepo : ICustomerRepo
         Customer? customer = await _context.Customers
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (customer is null)
+            return null;
+        return ConvertToViewModel(customer);
+    }
+
+    public async Task<CustomerViewModel?> GetByCardNumberAsync(string cardNumber)
+    {
+        Customer? customer = await _context.Customers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.CardNumber == cardNumber);
 
         if (customer is null)
             return null;
