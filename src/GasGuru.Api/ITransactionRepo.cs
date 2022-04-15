@@ -2,7 +2,7 @@
 
 public interface ITransactionRepo
 {
-    IAsyncEnumerable<TransactionModel> GetAllAsync();
-    Task<TransactionModel?> GetByIdAsync(Guid id);
-    Task CreateAsync(TransactionModel transaction);
+    IAsyncEnumerable<TransactionViewModel> GetAllAsync();
+    Task<TransactionViewModel?> GetByIdAsync(Guid id);
+    Task CreateAsync(TransactionCreateModel transaction);
 }

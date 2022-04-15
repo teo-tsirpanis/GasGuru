@@ -13,14 +13,14 @@ internal class TransactionRepo : ITransactionRepo
         _context = context;
     }
 
-    public async Task CreateAsync(TransactionModel entity)
+    public async Task CreateAsync(TransactionCreateModel entity)
     {
         Transaction validated = await ValidateTransactionModelAsync(entity);
         await _context.Transactions.AddAsync(validated);
         await _context.SaveChangesAsync();
     }
 
-    public IAsyncEnumerable<TransactionModel> GetAllAsync()
+    public IAsyncEnumerable<TransactionViewModel> GetAllAsync()
     {
         return _context.Transactions
             .Include(x => x.Customer)
@@ -28,11 +28,11 @@ internal class TransactionRepo : ITransactionRepo
             .Include(x => x.Lines)
             .ThenInclude(x => x.Item)
             .AsNoTracking()
-            .Select(x => ConvertToTransactionModel(x))
+            .Select(x => ConvertToViewModel(x))
             .AsAsyncEnumerable();
     }
 
-    public async Task<TransactionModel?> GetByIdAsync(Guid id)
+    public async Task<TransactionViewModel?> GetByIdAsync(Guid id)
     {
         Transaction? transaction = await _context.Transactions
             .Include(x => x.Customer)
@@ -44,10 +44,10 @@ internal class TransactionRepo : ITransactionRepo
 
         if (transaction is null)
             return null;
-        return ConvertToTransactionModel(transaction);
+        return ConvertToViewModel(transaction);
     }
 
-    private static TransactionModel ConvertToTransactionModel(Transaction transaction) =>
+    private static TransactionViewModel ConvertToViewModel(Transaction transaction) =>
         new()
         {
             Id = transaction.Id,
@@ -57,7 +57,7 @@ internal class TransactionRepo : ITransactionRepo
             EmployeeId = transaction.EmployeeId,
             EmployeeDisplay = $"{transaction.Employee.Name} {transaction.Employee.Surname}",
             PaymentMethod = (Api.PaymentMethod)transaction.PaymentMethod,
-            Lines = transaction.Lines.Select(x => new TransactionLineModel()
+            Lines = transaction.Lines.Select(x => new TransactionLineViewModel()
             {
                 ItemId = x.ItemId,
                 ItemDisplay = $"{x.Item.Code}",
@@ -67,7 +67,7 @@ internal class TransactionRepo : ITransactionRepo
             }).ToList()
         };
 
-    private async Task<TransactionLine> ValidateTransactionLineModelAsync(TransactionLineModel model)
+    private async Task<TransactionLine> ValidateTransactionLineModelAsync(TransactionLineCreateModel model)
     {
         if (model.DiscountPercent is not > 0.0m and <= 1.0m)
             throw new ArgumentException("Discount percentage must be between 0.0 and 1.0");
@@ -83,7 +83,7 @@ internal class TransactionRepo : ITransactionRepo
         };
     }
 
-    private async Task<Transaction> ValidateTransactionModelAsync(TransactionModel model)
+    private async Task<Transaction> ValidateTransactionModelAsync(TransactionCreateModel model)
     {
         if (!Enum.IsDefined(model.PaymentMethod))
             throw new InvalidOperationException("Invalid payment method");
