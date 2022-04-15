@@ -6,11 +6,11 @@ namespace GasGuru.Database;
 
 internal class GasStationContext : DbContext
 {
-    public DbSet<Customer> Customers { get; } = null!;
-    public DbSet<Item> Items { get; } = null!;
-    public DbSet<Employee> Employees { get; } = null!;
-    public DbSet<Transaction> Transactions { get; } = null!;
-    public DbSet<GasStationOptions> GasStationOptions { get; } = null!;
+    public DbSet<Customer> Customers { get; set; } = null!;
+    public DbSet<Item> Items { get; set;  } = null!;
+    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Transaction> Transactions { get; set; } = null!;
+    public DbSet<GasStationOptions> GasStationOptions { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
