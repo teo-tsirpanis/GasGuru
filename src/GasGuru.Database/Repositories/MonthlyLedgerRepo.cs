@@ -24,10 +24,16 @@ internal class MonthlyLedgerRepo : IMonthlyLedgerRepo
             .Where(s => s.Date.Year == year && s.Date.Month == month)
             .Include(x => x.Lines)
             .SelectMany(x => x.Lines)
-            .SumAsync(s => s.TotalPrice);
+            .SumAsync(s => s.Quantity * s.ItemPrice * (1 - s.DiscountPercent));
+        decimal itemCosts = await _context.Transactions
+            .Where(s => s.Date.Year == year && s.Date.Month == month)
+            .Include(x => x.Lines)
+            .ThenInclude(x => x.Item)
+            .SelectMany(x => x.Lines)
+            .SumAsync(s => s.Quantity * s.Item.Cost);
         var salaries = await _context.Employees
             .Where(x => x.HireDateStart >= new DateTime(year, month, 1) && x.HireDateEnd <= new DateTime(year, month, 1).AddMonths(1))
             .SumAsync(x => x.SalaryPerMonth);
-        return new() { Expenses = rent + salaries, Income = sales };
+        return new() { Expenses = rent + salaries + itemCosts, Income = sales };
     }
 }

@@ -15,6 +15,7 @@ public static class ServiceRegistrationExtensions
             .AddTransient<IItemRepo, ItemRepo>()
             .AddTransient<ITransactionRepo, TransactionRepo>()
             .AddTransient<IGasStationOptionsRepo, GasStationOptionsRepo>()
+            .AddTransient<IMonthlyLedgerRepo, MonthlyLedgerRepo>()
             ;
     }
 }

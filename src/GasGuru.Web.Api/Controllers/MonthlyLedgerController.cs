@@ -17,6 +17,6 @@ public class MonthlyLedgerController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<MonthlyLedger>> Get([FromQuery] int month, [FromQuery] int year)
     {
-        return await _repo.GetMonthlyLedgerAsync(month, year);
+        return await _repo.GetMonthlyLedgerAsync(month: month, year: year);
     }
 }
