@@ -30,7 +30,6 @@ public class TransactionViewModel
 
 public class TransactionLineViewModel
 {
-    public Guid Id { get; init; }
     public Guid ItemId { get; set; }
     public string ItemDisplay { get; set; }
     public decimal Quantity { get; set; }
@@ -56,7 +55,6 @@ public class TransactionCreateModel
 
 public class TransactionLineCreateModel
 {
-    public Guid Id { get; init; }
     public Guid ItemId { get; set; }
     [Range(0.01, 1000)]
     public decimal Quantity { get; set; }

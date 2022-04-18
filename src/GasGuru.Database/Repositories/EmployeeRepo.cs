@@ -34,7 +34,7 @@ internal class EmployeeRepo : IEmployeeRepo
     {
         IQueryable<Employee> query = _context.Employees.AsNoTracking();
         if (!includeDeleted)
-            query = query.Where(x => x.HireDateEnd.HasValue);
+            query = query.Where(x => !x.HireDateEnd.HasValue);
         return query.Select(x => ConvertToViewModel(x)).AsAsyncEnumerable();
     }
 
